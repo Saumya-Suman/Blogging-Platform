@@ -6,9 +6,11 @@ const storySlice = createSlice({
     title: "",
     content: "",
     imageUrl: "",
+    imageFile: null,
     previewVisible: false,
     showUploader: false,
     activeTab: "upload",
+    storyStatus: "draft",
   },
 
   reducers: {
@@ -27,11 +29,23 @@ const storySlice = createSlice({
       }
     },
 
-    setCoverImage: (state, action) => {
-      (state.imageUrl = action.payload), (state.previewVisible = true);
+    setImageFile: (state, action) => {
+      state.imageFile = action.payload;
+      state.previewVisible = true;
     },
+    setImageUrl: (state, action) => {
+      state.imageUrl = action.payload;
+      state.previewVisible = true;
+    },
+
+    // setCoverImage: (state, action) => {
+    //   state.imageUrl = action.payload.previewUrl;
+    //   state.imageFile = action.payload.file;
+    //   state.previewVisible = true;
+    // },
     removeCoverImage: (state) => {
       state.imageUrl = "";
+      state.imageFile = null;
       state.previewVisible = false;
       state.showUploader = false;
     },
@@ -41,7 +55,12 @@ const storySlice = createSlice({
 
     setImageFromUrl: (state, action) => {
       state.imageUrl = action.payload;
+      state.imageFile = null; // URL mode → no file
       state.previewVisible = true;
+    },
+
+    saveDraft: (state) => {
+      state.storyStatus = "draft";
     },
 
     discardStory: (state) => {
@@ -49,6 +68,14 @@ const storySlice = createSlice({
       state.content = "";
       state.showUploader = false;
       state.imageUrl = "";
+      state.previewVisible = false;
+      state.storyStatus = "draft";
+    },
+    resetStory: (state) => {
+      state.title = "";
+      state.content = "";
+      state.coverImage = null;
+      state.showUploader = false;
     },
   },
 });
@@ -56,10 +83,13 @@ export const {
   setTitle,
   setContent,
   setActiveTab,
-  setCoverImage,
+  setImageFile,
+  setImageUrl,
   removeCoverImage,
   setShowUploader,
   setImageFromUrl,
+  saveDraft,
   discardStory,
+  resetStory,
 } = storySlice.actions;
 export default storySlice.reducer;

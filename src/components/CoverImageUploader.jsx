@@ -1,9 +1,10 @@
 // src/components/CoverImageUploader.jsx
+
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { useState } from "react";
 import { setImageFromUrl, removeCoverImage } from "../utils/coverSlice";
-import { setCoverImage } from "../utils/coverSlice";
+import { setImageFile, setImageUrl } from "../utils/coverSlice";
 import { setActiveTab } from "../utils/coverSlice";
 import {setShowUploader } from "../utils/coverSlice";
 
@@ -19,11 +20,13 @@ const CoverImageUploader = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
+ const handleFileChange = (event) => {
   const file = event.target.files[0];
   if (file) {
-    const previewUrl = URL.createObjectURL(file);
-    dispatch(setCoverImage(previewUrl));
+    const previewURL = URL.createObjectURL(file);
+    // dispatch(setCoverImage({ previewUrl, file })); // 👈 store both
+    dispatch(setImageFile(file));
+    dispatch(setImageUrl(previewURL));
   }
 };
 
@@ -82,7 +85,7 @@ const CoverImageUploader = () => {
                 />
                 <button
                   onClick={handleRemoveImage}
-                  className="absolute bg-white/200 text-white rounded-lg p-2 hover:bg-black transition -mt-70"
+                  className="absolute top-2 right-2 bg-black/70 text-white rounded-md px-3 py-1 text-sm hover:bg-black transition"
                 >
                   Remove Image
                 </button>
@@ -125,7 +128,7 @@ const CoverImageUploader = () => {
               <button
                 onClick={handleAddImage}
                 className=""
-                dissbled={!urlInput.trim()}
+                disabled={!urlInput.trim()}
               >
                 Add Image
               </button>
@@ -153,3 +156,4 @@ const CoverImageUploader = () => {
 };
 
 export default CoverImageUploader;
+

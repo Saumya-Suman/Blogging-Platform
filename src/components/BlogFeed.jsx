@@ -1,15 +1,15 @@
 import { useSelector } from "react-redux";
 import BlogPost from "./BlogPost";
 import useBlogPosts from "../utils/useBlogPosts";
-import SignIn from "./SignIn";
 
+//map through posts and render BlogPost component for each post.
 const BlogFeed = () => {
   useBlogPosts();
-  const Posts = useSelector((store) => store.posts);
-
-  return (
+  const Posts = useSelector((store) => store.posts.posts);
+  
+ return (
     <div className="max-w-4xl mx-auto ">
-      {Posts.length > 0 ? (
+      {Posts && Posts.length > 0 ? (
         Posts.map((post, index) => (
           <BlogPost
             key={post.id  || index }
@@ -20,8 +20,12 @@ const BlogFeed = () => {
         <p>Loading posts...</p>
       )}
     </div>
+
+   
   );
 };
 
 export default BlogFeed;
+
+
 

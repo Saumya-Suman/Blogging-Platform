@@ -15,7 +15,9 @@ const Header = ({ onSignInClick }) => {
   const handleSignOut = () => {
     //take signOut implementation from signOut.
     signOut(auth)
-      .then(() => {})
+      .then(() => {
+        navigate("/")
+      })
       .catch(() => {
         console.log("error");
       });
@@ -26,10 +28,8 @@ const Header = ({ onSignInClick }) => {
       if (user) {
         const { uid, email, displayName } = user;
         dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
-        navigate("/blogSpace");
       } else {
-        dispatch(deleteUser());
-        navigate("/");
+        dispatch(deleteUser()); 
       }
     });
 

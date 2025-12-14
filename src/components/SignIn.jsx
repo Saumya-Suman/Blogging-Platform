@@ -53,6 +53,7 @@ const SignIn = ({ onClose }) => {
                   displayName: displayName,
                 })
               );
+               onClose();
             })
             .catch((error) => {
               setErrorMessage(error.message);
