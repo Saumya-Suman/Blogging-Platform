@@ -8,7 +8,7 @@ const BlogFeed = () => {
   const Posts = useSelector((store) => store.posts.posts);
   
  return (
-    <div className="max-w-4xl mx-auto ">
+    <div className="">
       {Posts && Posts.length > 0 ? (
         Posts.map((post, index) => (
           <BlogPost

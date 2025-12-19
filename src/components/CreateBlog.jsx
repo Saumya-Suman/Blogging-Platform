@@ -12,17 +12,17 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadImageToCloudinary } from "../utils/uploadImageToCloudinary";
-import DraftPopUp from "./DraftPopUp";
+
 
 const CreateBlog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // ✅ also get imageFile
-  const { title, content, imageUrl, imageFile } = useSelector(
+  const { title, content, imageUrl, imageFile, showUploader } = useSelector(
     (state) => state.story
   );
-  const { showUploader } = useSelector((state) => state.story);
+  const user = useSelector((state) => state.user);
 
   const [publishing, setPublishing] = useState(false);
 
@@ -50,7 +50,8 @@ const CreateBlog = () => {
         description: content.slice(0, 200),
         content,
         image: finalImageUrl,
-        author: "Anonymous",
+        authorId: user.uid,
+        authorName: user.displayName || "Anonymous",
         createdAt: serverTimestamp(),
         likes: 0,
         comments: [],

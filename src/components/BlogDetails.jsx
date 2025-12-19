@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase";
-import { doc, getDoc, updateDoc, deleteDoc, increment } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  increment,
+} from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { updatePost, deletePost } from "../utils/blogPostSlice";
+import { updatePost} from "../utils/blogPostSlice";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -73,13 +79,19 @@ const BlogDetails = () => {
 
   // DELETE COMMENT handler
   const handleDeleteComment = async (index) => {
+    //postRef kya hain ? --> Firestore me us post ka reference jisme se comment delete karna hain.
     const postRef = doc(db, "posts", id);
+    //bina original array ko change kiye hue naya array banaa rahe hain jisme se specified index wala comment hata diya gaya hai.
     const newComments = [...(post.comments || [])];
     newComments.splice(index, 1);
 
+// Firestore update
     await updateDoc(postRef, { comments: newComments });
     await updateDoc(postRef, { commentCount: increment(-1) });
+    //commentCount = posts pe total kitne comments hain ?
 
+    //this code updates the local state for immediate UI reflection and 
+    // also updates the Redux store to keep the global state in sync.
     setPost((p) => ({
       ...p,
       comments: newComments,
@@ -95,6 +107,9 @@ const BlogDetails = () => {
   };
 
   // DELETE BLOG handler
+  //here, the delete logic is deleting the document from Firestore.
+  //The additional code handles confirmation, loading state, Redux synchronization, error handling, and navigation,
+  // which are essential for a good user experience and reliable application behavior.”
   const handleDeletePost = async () => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
 
@@ -104,7 +119,7 @@ const BlogDetails = () => {
       await deleteDoc(postRef); // delete from Firestore
 
       // Update Redux posts list
-      dispatch(deletePost(id));
+      // dispatch(deletePost(id));
 
       alert("Blog deleted successfully!");
       navigate("/"); // redirect to home page
@@ -140,20 +155,17 @@ const BlogDetails = () => {
 
       <h1 className="text-3xl mb-2">{post.title}</h1>
       <p className="text-sm text-gray-500 mb-4">
-        {post.author} •{" "}
-        {post.createdAt?.toDate
-          ? post.createdAt.toDate().toLocaleString()
-          : ""}
+        {post.author}  {""}
+        {/* //date & time */}
+          {post.createdAt?.toDate ? post.createdAt.toDate().toLocaleString() : ""}  
       </p>
 
-      {post.image && (
         <img
           src={post.image}
           alt=""
           className="w-full rounded mb-4 object-cover max-h-[400px]"
         />
-      )}
-
+    
       <div className="prose mb-6">{post.content}</div>
 
       {/* Like Section */}

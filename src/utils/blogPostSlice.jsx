@@ -10,16 +10,21 @@ const blogPostSlice = createSlice({
     addPosts: (state, action) => {
       state.posts = action.payload; // replace array
     },
+    //filter() returns a new array without the deleted post
     deletePost: (state, action) => {
       return state.posts.filter((post) => post.id !== action.payload);
     },
-  
+
     // updatePost is helpful for likes/comments.
+
     updatePost: (state, action) => {
-      const updated = action.payload;
-      const idx = state.posts.findIndex((p) => p.id === updated.id);
-      if (idx !== -1) state[idx] = { ...state[idx], ...updated };
+      const { id, ...updates } = action.payload;
+      const index = state.posts.findIndex((p) => p.id === id);
+      if (index !== -1) {
+        state.posts[index] = { ...state.posts[index], ...updates };
+      }
     },
+
     updateLikes: (state, action) => {
       const { id, likes } = action.payload;
       const post = state.posts.find((p) => p.id === id);

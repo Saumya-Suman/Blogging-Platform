@@ -1,70 +1,66 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { addUser, deleteUser } from "../utils/userSlice";
-import { onAuthStateChanged } from "firebase/auth";
+import { useSelector } from "react-redux";
+
 
 const Header = ({ onSignInClick }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const user = useSelector((store) => store.user); //get user from redux.
 
   const handleSignOut = () => {
     //take signOut implementation from signOut.
     signOut(auth)
       .then(() => {
-        navigate("/")
+        navigate("/");
       })
       .catch(() => {
         console.log("error");
       });
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const { uid, email, displayName } = user;
-        dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
-      } else {
-        dispatch(deleteUser()); 
-      }
-    });
-
-    //Unsubscribe when component unmount --REMOVED
-    return () => unsubscribe();
-  }, []);
-
   return (
-    <div className="flex justify-between items-center px-8 py-4 shadow-md">
-      {}
-      <h1 className="ml-70 text-2xl">BlogSpace</h1>
-      {user && user.uid ? (
-        <div className="">
-          <button
-            className="text-white bg-black rounded-lg px-3 py-1 mr-40"
-            onClick={() => navigate("/create-blog")}
-          >
-            🖋️ Write
-          </button>
-          <button
-            className="text-white bg-black rounded-lg px-3 py-1 mr-70"
-            onClick={handleSignOut}
-          >
-            SignOut
-          </button>
-        </div>
-      ) : (
-        <button
-          className="text-white bg-black rounded-lg px-3 py-1 mr-70"
-          onClick={onSignInClick}
+    <header className="w-full shadow-md">
+      <div className="max-w-6xl mx-auto flex items-center justify-between py-4 sm:px-8 sm:py-4 ">
+        
+        {/* LEFT : LOGO */}
+        <h1
+          className="text-2xl font-bold cursor-pointer sm:text-2xl "
+          onClick={() => navigate("/")}
         >
-          SignIn
-        </button>
-      )}
-    </div>
+          BlogSpace
+        </h1>
+
+        {/* RIGHT : ACTIONS */}
+        {user?.uid ? (
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button
+              onClick={() => navigate("/create-blog")}
+              className="bg-black text-white px-3 py-1 rounded-lg sm:px-3 sm:py-1 sm:text-base"
+            >
+              🖋️ Write
+            </button>
+
+            <span className="text-gray-700 font-medium sm:block hidden">
+              👤 {user.displayName || "User"}
+            </span>
+
+            <button
+              onClick={handleSignOut}
+              className="bg-black text-white px-3 py-1 rounded-lg sm:px-3 sm:py-1 sm:text-base"
+            >
+              SignOut
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={onSignInClick}
+            className="bg-black text-white px-3 py-1 rounded-lg sm:px-3 sm:py-1 sm:text-base"
+          >
+            SignIn
+          </button>
+        )}
+      </div>
+    </header>
   );
 };
 export default Header;

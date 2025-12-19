@@ -4,6 +4,7 @@ import { addPosts } from "./blogPostSlice";
 import { db } from "../firebase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 
+//custom hook to fetch blog posts in real-time
 const useBlogPosts = () => {
   const dispatch = useDispatch();
 

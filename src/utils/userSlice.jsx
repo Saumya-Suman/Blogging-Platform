@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// This slice represents the currently logged-in user
 const userSlice = createSlice({
   name: "user",
   initialState: {

@@ -11,6 +11,7 @@ import { addUser } from "../utils/userSlice";
 const SignIn = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("logIn");
   const [error, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
 
   //craete reference and Now I want to refer my input box these references.
   //this will help us to get the reference of input box.
@@ -18,73 +19,41 @@ const SignIn = ({ onClose }) => {
   const email = useRef(null);
   const password = useRef(null);
 
-  const dispatch = useDispatch();
-
-  const handleButtonClick = () => {
-    // console.log(email.current.value);
-    // console.log(password.current.value);
-
-    // Validate Form --
+  const handleButtonClick = async () => {
     const message = checkValidData(email.current.value, password.current.value);
+
     setErrorMessage(message);
-    //If error message is present I want to return my code from here.
     if (message) return;
 
-    //Logic of login and signUp whatever you wish to do
-    //Authentication using Firebase for logIn and signUp
-   if (activeTab !== "logIn") {
-      createUserWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
-           updateProfile(user, {
+    try {
+      if (activeTab === "signUp") {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.current.value, // ✅ FIX
+          password.current.value // ✅ FIX
+        );
+
+        await updateProfile(userCredential.user, {
+          displayName: name.current.value, // ✅ FIX
+        });
+        dispatch(
+          addUser({
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
             displayName: name.current.value,
           })
-            .then(() => {
-              const { uid, email, displayName} = auth.currentUser;
-              dispatch(
-                addUser({
-                  uid: uid,
-                  email: email,
-                  displayName: displayName,
-                })
-              );
-               onClose();
-            })
-            .catch((error) => {
-              setErrorMessage(error.message);
-            });
-           //console.log(user); //object recieves
-        })            
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "_" + errorMessage);
-        });
-    } else {
-      //LogIn Logic
-      signInWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          alert("Login successful!");
-          onClose();
-          
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "_" + errorMessage);
-        });
+        );
+      } else {
+        await signInWithEmailAndPassword(
+          auth,
+          email.current.value, // ✅ FIX
+          password.current.value // ✅ FIX
+        );
+      }
+
+      onClose();
+    } catch (err) {
+      setErrorMessage(err.message);
     }
   };
 
@@ -106,12 +75,22 @@ const SignIn = ({ onClose }) => {
           Sign in to start writing and engaging with posts
         </h2>
         <div className="bg-gray-100 rounded-lg flex justify-between px-2 py-2 shadow-sm my-4">
-          <button className={`flex-1 py-2 rounded-lg ${activeTab === "logIn" ? "bg-white font-semibold" : ""}`} onClick={() => setActiveTab("logIn")}>
+          <button
+            className={`flex-1 py-2 rounded-lg ${
+              activeTab === "logIn" ? "bg-white font-semibold" : ""
+            }`}
+            onClick={() => setActiveTab("logIn")}
+          >
             Log In
           </button>
-          <button className={`flex-1 py-2 rounded-lg ${activeTab === "signUp" ? "bg-white font-semibold" : ""}`} onClick={() => setActiveTab("signUp")}>
+          <button
+            className={`flex-1 py-2 rounded-lg ${
+              activeTab === "signUp" ? "bg-white font-semibold" : ""
+            }`}
+            onClick={() => setActiveTab("signUp")}
+          >
             Sign Up
-          </button>     
+          </button>
         </div>
         <form
           className="flex flex-col space-y-3"
@@ -146,7 +125,7 @@ const SignIn = ({ onClose }) => {
               className="my-3 bg-gray-200 px-4 py-2 rounded-md"
             />
           </div>
-          <p className="text-red-500 text-lg">{error}</p>
+          {error && <p className="text-red-500">{error}</p>}
           <button type="button" onClick={handleButtonClick}>
             {activeTab === "logIn" ? "Log In" : "Sign Up"}
           </button>
@@ -156,4 +135,3 @@ const SignIn = ({ onClose }) => {
   );
 };
 export default SignIn;
-
