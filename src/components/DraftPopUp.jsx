@@ -10,8 +10,8 @@ const DraftPopUp = () => {
   if (!showPopup) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-xl shadow-xl w-[400px] text-center">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z--[9999]">
+      <div className="bg-white p-6 rounded-xl shadow-xl w-[400px] text-center z-[]0000]">
         <h2 className="text-xl font-bold mb-4">
           {popupType === "delete"
             ? "Draft Deleted Successfully!"

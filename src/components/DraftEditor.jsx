@@ -43,20 +43,21 @@ const DraftEditor = ({ onClose }) => {
   };
 
   return (
-    <div>
-      <div className="flex justify-between px-8 py-4 shadow-md">
-        <h1 className="text-xl ml-70">Editing Draft</h1>
+    <div className="">
+      <div className="w-full shadow-md">
+      <div className="max-w-6xl mx-auto flex sm:flex-row items-center justify-between px-2 py-4 sm:px-8 sm:py-4">
+        <h1 className="text-xl sm:text-2xl ">Editing Draft</h1>
 
-        <div className="flex mr-60 gap-6">
+        <div className="flex items-center gap-3 sm:mx-4 justify-between">
           <img
             src="https://cdn-icons-png.flaticon.com/128/2976/2976286.png"
             alt="closing-form"
-            className="w-2 h-2 my-3 cursor-pointer"
+            className="w-3 h-3 cursor-pointer"
             onClick={onClose}
           />
 
           <button
-            className={`shadow-md cursor-pointer px-6 rounded-md ${
+            className={`shadow-md cursor-pointer items-center px-2 py-2 rounded-md ${
               isDeleteEnabled
                 ? "bg-blue-500 text-white"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -67,10 +68,11 @@ const DraftEditor = ({ onClose }) => {
             🗑 Delete Draft
           </button>
         </div>
+        </div>
       </div>
-
       <CreateBlog />
     </div>
+  
   );
 };
 

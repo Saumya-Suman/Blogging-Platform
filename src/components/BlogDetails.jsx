@@ -134,7 +134,7 @@ const BlogDetails = () => {
   if (!post) return <p>Loading...</p>;
 
   return (
-    <div className="max-w-3xl mx-auto my-8">
+    <div className="max-w-3xl mx-auto my-8 w-full p-5">
       {/* BACK + DELETE BUTTON */}
       <div className="flex justify-end gap-2 mb-4">
         <button

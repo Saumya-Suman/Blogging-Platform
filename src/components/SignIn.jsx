@@ -58,8 +58,8 @@ const SignIn = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center ">
-      <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 ">
+    <div className="fixed inset-0 flex justify-center items-center p-10 border">
+      <div className="bg-white border border-gray-300 rounded-xl shadow-xl max-w-md w-full p-6">
         <button
           className="w-full flex justify-end cursor-pointer"
           onClick={onClose}

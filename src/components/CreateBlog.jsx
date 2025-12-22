@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadImageToCloudinary } from "../utils/uploadImageToCloudinary";
 
-
 const CreateBlog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -86,17 +85,16 @@ const CreateBlog = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div className="text-gray-500 max-w-5xl mx-auto my-10 px-8 py-8 border border-black/10 rounded-lg h-full shadow-md">
+    <div className="w-full p-5 ">
+      <form onSubmit={(e) => e.preventDefault()} className="mx-auto mt-6 px-4 py-6 sm:px-8 sm:py-8 max-w-3xl bg-white rounded-lg shadow-md border border-black/10">
           {/* TITLE */}
-          <div className="pb-4 my-8 border-b border-black/10">
+          <div className="pb-4 my-8 border-black/10 border-b">
             <label className="block uppercase">TITLE</label>
             <input
               type="text"
               value={title}
               placeholder="Enter your story title..."
-              className="text-5xl w-full outline-none"
+              className=" w-full sm:text-5xl text-4xl font-semibold outline-none"
               onChange={(e) => dispatch(setTitle(e.target.value))}
             />
           </div>
@@ -131,22 +129,21 @@ const CreateBlog = () => {
               value={content}
               placeholder="Start writing your story..."
               onChange={(e) => dispatch(setContent(e.target.value))}
-              className="w-full min-h-[400px] p-2 border rounded-md outline-none"
+              className="w-full min-h-[400px] p-2 rounded-md outline-none"
             />
-          </div>
-        </div>
-
-        {/* BUTTONS */}
-        <div className="flex justify-between mb-40">
+          </div>   
+      </form>
+         {/* BUTTONS */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-around px-4 py-4 sm:px-0 sm:py-4 mb-32">
           <button
-            className="ml-80 shadow-md px-4 py-2 hover:bg-gray-200/30 rounded-md"
+            className="px-4 py-2 rounded-md shadow-md"
             onClick={handleDiscard}
           >
             🗄️ Discard
           </button>
           <button
             disabled={!isPublishEnabled || publishing}
-            className={`px-5 py-2 mr-80 shadow-md rounded-md ${
+            className={`px-5 py-2 rounded-md shadow-md ${
               isPublishEnabled
                 ? "bg-green-500 hover:bg-green-600 text-white"
                 : "bg-gray-400 text-gray-200 cursor-not-allowed"
@@ -156,7 +153,6 @@ const CreateBlog = () => {
             {publishing ? "Publishing..." : "🌟 Publish Story"}
           </button>
         </div>
-      </form>
     </div>
   );
 };

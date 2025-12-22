@@ -20,11 +20,11 @@ const Header = ({ onSignInClick }) => {
   };
   return (
     <header className="w-full shadow-md">
-      <div className="max-w-6xl mx-auto flex items-center justify-between py-4 sm:px-8 sm:py-4 ">
+      <div className="max-w-6xl mx-auto flex items-center justify-between py-4 sm:px-8 sm:py-4 px-2">
         
         {/* LEFT : LOGO */}
         <h1
-          className="text-2xl font-bold cursor-pointer sm:text-2xl "
+          className="text-2xl font-bold cursor-pointer sm:text-2xl"
           onClick={() => navigate("/")}
         >
           BlogSpace
@@ -35,7 +35,7 @@ const Header = ({ onSignInClick }) => {
           <div className="flex items-center gap-2 sm:gap-4">
             <button
               onClick={() => navigate("/create-blog")}
-              className="bg-black text-white px-3 py-1 rounded-lg sm:px-3 sm:py-1 sm:text-base"
+              className="bg-black text-white px-2 py-1 rounded-lg sm:px-3 sm:py-1 sm:text-base"
             >
               🖋️ Write
             </button>
